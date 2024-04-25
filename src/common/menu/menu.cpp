@@ -436,7 +436,9 @@ void DMenu::CallDrawer()
 	IFVIRTUAL(DMenu, Drawer)
 	{
 		VMValue params[] = { (DObject*)this };
+		InMenu++;
 		VMCall(func, params, 1, nullptr, 0);
+		InMenu--;
 		twod->ClearClipRect();	// make sure the scripts don't leave a valid clipping rect behind.
 	}
 }
