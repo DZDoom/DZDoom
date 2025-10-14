@@ -122,7 +122,7 @@ CUSTOM_CVARD(Float, gl_texture_filter_anisotropic, 8.f, CVAR_ARCHIVE | CVAR_GLOB
 
 CUSTOM_CVARD(Int, gl_texture_filter, 6, CVAR_ARCHIVE|CVAR_GLOBALCONFIG|CVAR_NOINITCALL, "changes the texture filtering settings")
 {
-	if (self < 0 || self > 6) self=4;
+	if (self < 0 || self > 6) self=6;
 	screen->SetTextureFilterMode();
 }
 
