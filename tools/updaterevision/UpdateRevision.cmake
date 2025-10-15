@@ -18,10 +18,13 @@ function(query_repo_info)
 	# are we git?
 	execute_process(
 		COMMAND git rev-parse --is-inside-work-tree
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 		RESULT_VARIABLE is_git
 		OUTPUT_QUIET
 	)
+
+	set(Tag "unknown")
+	string(TIMESTAMP Timestamp "%Y-%m-%d %H:%M:%S %z")
+	set(Hash "0000000")
 
 	if(DEFINED ENV{GIT_DESCRIBE})
 		# from env
@@ -35,49 +38,41 @@ function(query_repo_info)
 		string(REGEX MATCH "-g([0-9a-fA-F]+)" match_result "${Tag}")
 		if(match_result)
 			set(Hash "${CMAKE_MATCH_1}")
-		else()
-			set(Hash "0000000")
 		endif()
-
-		string(TIMESTAMP Timestamp "%Y-%m-%d %H:%M:%S %z")
 	elseif(is_git EQUAL "0")
 		# from git
 		execute_process(
 			COMMAND git describe --tags --dirty=-m
 			RESULT_VARIABLE Error
-			OUTPUT_VARIABLE Tag
+			OUTPUT_VARIABLE Temp
 			ERROR_QUIET
 			OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
 
 		if(NOT "${Error}" STREQUAL "0")
-			message(STATUS "No git tags found! Set version tag by setting GIT_DESCRIBE env var")
-			ret_var(Error)
-			return()
+			message(STATUS "No git tags found! Using fallback '${Tag}'")
+		else()
+			set(Tag "${Temp}")
 		endif()
 
 		execute_process(
 			COMMAND git log -1 "--format=%ai;%H"
 			RESULT_VARIABLE Error
-			OUTPUT_VARIABLE CommitInfo
+			OUTPUT_VARIABLE Temp
 			ERROR_QUIET
 			OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
 
 		if(NOT "${Error}" STREQUAL "0")
-			message(STATUS "No git commits found! Set version tag by setting GIT_DESCRIBE env var")
-			ret_var(Error)
-			return()
+			message(STATUS "No git commits found! Using fallback '${Hash}'")
+		else()
+			string(REPLACE ";" ";" CommitInfo "${Temp}")
+			list(GET CommitInfo 0 Timestamp)
+			list(GET CommitInfo 1 Hash)
 		endif()
 
-		string(REPLACE ";" ";" CommitInfoList "${CommitInfo}")
-		list(GET CommitInfoList 0 Timestamp)
-		list(GET CommitInfoList 1 Hash)
 	else()
-		# helpful message
 		message(STATUS "Not a git repo! Set version tag by setting GIT_DESCRIBE env var")
-		ret_var(Error)
-		return()
 	endif()
 
 	ret_var(Tag)
