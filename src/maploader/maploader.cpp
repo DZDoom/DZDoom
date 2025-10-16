@@ -1742,6 +1742,10 @@ void MapLoader::LoadLineDefs (MapData * map)
 		mld->special = LittleShort(mld->special);
 		mld->tag = LittleShort(mld->tag);
 		mld->flags = LittleShort(mld->flags);
+
+		// Only allow vanilla flags on certain maps
+		if (Level->i_compatflags2 & COMPATF2_RESERVEDLINEFLAG) mld->flags &= 0x01FF;
+
 		Level->TranslateLineDef (ld, mld, -1);
 		// do not assign the tag for Extradata lines.
 		if (ld->special != Static_Init || (ld->args[1] != Init_EDLine && ld->args[1] != Init_EDSector))
