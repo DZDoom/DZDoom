@@ -3,7 +3,7 @@ Name=UZDoom
 Comment=Multi-game launcher for Doom era games
 Icon=org.uzdoom.UZDoom
 Categories=Game;Shooter;
-Exec=gzdoom %F
+Exec=uzdoom %F
 StartupNotify=true
 PrefersNonDefaultGPU=true
 Terminal=false
@@ -15,29 +15,29 @@ Actions=launch-safemode;launch-doom-1;launch-doom-2;launch-heretic;launch-hexen;
 [Desktop Action launch-safemode]
 Name=GZDoom Safemode
 Icon=org.uzdoom.UZDoom
-Exec=gzdoom -noautoload -noautoexec %F
+Exec=uzdoom -noautoload -noautoexec %F
 
 [Desktop Action launch-doom-1]
 Name=Launch Doom
 Icon=org.uzdoom.UZDoom
-Exec=gzdoom -iwad DOOM.WAD %F
+Exec=uzdoom -iwad DOOM.WAD %F
 
 [Desktop Action launch-doom-2]
 Name=Launch Doom 2
 Icon=org.uzdoom.UZDoom
-Exec=gzdoom -iwad DOOM2.WAD %F
+Exec=uzdoom -iwad DOOM2.WAD %F
 
 [Desktop Action launch-heretic]
 Name=Launch Heretic
 Icon=org.uzdoom.UZDoom
-Exec=gzdoom -iwad HERETIC.WAD %F
+Exec=uzdoom -iwad HERETIC.WAD %F
 
 [Desktop Action launch-hexen]
 Name=Launch Hexen
 Icon=org.uzdoom.UZDoom
-Exec=gzdoom -iwad HEXEN.WAD %F
+Exec=uzdoom -iwad HEXEN.WAD %F
 
 [Desktop Action launch-strife]
 Name=Launch Strife
 Icon=org.uzdoom.UZDoom
-Exec=gzdoom -iwad STRIFE1.WAD %F
+Exec=uzdoom -iwad STRIFE1.WAD %F
