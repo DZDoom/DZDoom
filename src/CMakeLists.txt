@@ -1468,7 +1468,7 @@ if( UNIX AND NOT APPLE )
 	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/posix/freedesktop/org.uzdoom.UZDoom.metainfo.xml
 			DESTINATION share/metainfo
 			PERMISSIONS WORLD_READ GROUP_READ GROUP_EXECUTE OWNER_READ OWNER_WRITE)
-	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/posix/freedesktop/org.uzdoom.UZDoom.svg
+	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/posix/freedesktop/org.uzdoom.UZDoom.png
 			DESTINATION share/icons/hicolor/scalable/apps
 			PERMISSIONS WORLD_READ GROUP_READ GROUP_EXECUTE OWNER_READ OWNER_WRITE)
 	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/posix/freedesktop/org.uzdoom.UZDoom-mime.xml
