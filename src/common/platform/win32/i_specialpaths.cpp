@@ -166,7 +166,7 @@ FString M_GetCachePath(bool create)
 
 	// Don't use GAME_DIR and such so that ZDoom and its child ports can
 	// share the node cache.
-	path += "/zdoom/cache";
+	path += "/uzdoom/cache";
 	if (create)
 	{
 		CreatePath(path.GetChars());

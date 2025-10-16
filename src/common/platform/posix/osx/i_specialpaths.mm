@@ -126,7 +126,7 @@ FString M_GetCachePath(bool create)
 		path = progdir;
 	}
 
-	path += "/zdoom/cache";
+	path += "/uzdoom/cache";
 	if (create) CreatePath(path.GetChars());
 	return path;
 }
