@@ -183,7 +183,7 @@ namespace Priv
 			// Enforce minimum size limit
 			SDL_SetWindowMinimumSize(Priv::window, VID_MIN_WIDTH, VID_MIN_HEIGHT);
 			// Tell SDL to start sending text input on Wayland if it's on affected versions.
-			if (strncasecmp(SDL_GetCurrentVideoDriver(), "wayland", 7) == 0 && !(sdlver.major >= 2 && sdlver.minor >= 0 && sdlver.patch >= 18))
+			if (strncasecmp(SDL_GetCurrentVideoDriver(), "wayland", 7) == 0 && sdlver.major == 2 && sdlver.minor == 0 && sdlver.patch < 18)
 				SDL_StartTextInput();
 		}
 	}
