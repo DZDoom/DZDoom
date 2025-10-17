@@ -158,6 +158,11 @@ FARG(timer, "Play", "Time limit in minutes before automatically advancing levels
 FARG(avg, "Play", "Automatically advances to the next level after 20 minutes.", "",
 	"Stands for “Austin Virtual Gaming”. Automatically advances to the next level after 20"
 	" minutes. This is equivalent to +set timelimit 20 or -timer 20.");
+FARG(coop, "Play", "Co-op settings preset", "",
+	"A convenient settings preset (not accurate to vanilla Doom's Co-op). Enabling this ensures"
+	" deathmatch is off, doesn't spawn multiplayer-tagged weapons, disables player collisions and"
+	" friendly fire, allows for key sharing, disables item theft, and rememnbers your last weapon"
+	" upon death.");
 
 FARG(oldsprites, "Configuration", "Prevents the game from renaming sprites.", "",
 	"Disables sprite renaming. Unless you are playing a mod for Heretic, Hexen or Strife that"
@@ -177,6 +182,8 @@ FARG(norun, "Debug", "Quits the game early to check for script errors.", "",
 FARG(dumpjit, "Debug", "Outputs the ZScript JIT-compilation result to a text file.", "",
 	"Outputs a result of the ZScript JIT-compilation to Assembler to the external file"
 	" \"dumpjit.txt\".");
+FARG_CUSTOM(logfile, "+logfile", "Debug", false, "Copies console output to file", "log.txt",
+	"Copies output of console to file specified. File saving is relative to working directory");
 
 FARG(altdeath, "Multiplayer", "Starts a deathmatch game with respawning items.", "",
 	"Informs " GAMENAME " that you will be playing a deathmatch game and sets the dmflags CVAR so"
@@ -253,6 +260,29 @@ FARG(xlat, "Loading", "Specifies a different default map translator to use.", "f
 	" Eternity Engine mod, the xlat/eternity.txt file can be used, though keep in mind that many"
 	" Eternity features are not implemented in " GAMENAME " and will not work even after"
 	" translation. You can specify your own custom translator.");
+FARG(nolights, "Loading", "Disables loading of lights.pk3", "",
+	"Forcefully disables loading of lights.pk3, which contains definitions for adding dynamic"
+	" lights to default Actors");
+FARG(nobrightmaps, "Loading", "Disables loading of brightmaps.pk3", "",
+	"Forcefully disables loading of brightmaps.pk3, which contains brightmaps and their"
+	" definitions for default graphics");
+FARG(nowidescreen, "Loading", "Disables loading of game_widescreen_gfx.pk3", "",
+	"Forcefully disables loading of widescreen_gfx.pk3, which contains widescreen extensions"
+	" for default graphics that were designed for 4:3");
+FARG_CUSTOM(map, "+map", "Loading", false, "Starts the game in a certain map", "MAP01",
+	"Similarly to -warp, this starts the game in a certain map. However, it takes the map's lump"
+	" string, instead of a level number. Level number is automatically set based on a combination"
+	" of the game and the map name, or it's manually set in MAPINFO.");
+FARG(noextras, "Loading", "Disables loading of 'extra graphics' WADs", "",
+	"Forcefully disables loading of lights.pk3, brightmaps.pk3, and widescreen_gfx.pk3. These"
+	" contain definitions for adding dynamic lights to default Actors, brightmaps and their"
+	" definitions for default graphics, and widescreen extensions for default graphics that were"
+	" designed for 4:3");
+FARG(nointro, "Loading", "Skips intro video", "",
+	"If an intro video is defined, then it will play before showing the title screen. Setting this"
+	" skips that behavior and always goes to the title screen immediately.");
+FARG(episode, "Loading", "Starts the game on the first map of an episode", "1",
+	"Like -warp, bu starts the game on the first map of the specified episode");
 
 FARG(version, "Other", "Print version", "",
 	"Print version and exit.");
@@ -285,33 +315,15 @@ FARG_ADVANCED(devparm, "Deprecated", "",
 	" using -devparm was the only way to take screenshots. With " GAMENAME ", screenshot is just"
 	" another command, so -devparm serves no real purpose.");
 
-FARG(episode, "", "", "",
-	"");
 FARG(rngseed, "", "", "",
 	"");
 FARG(compatmode, "", "", "",
 	"");
 FARG(errorlog, "", "", "",
 	"");
-FARG(noextras, "", "", "",
-	"");
-FARG(coop, "", "", "",
-	"");
-FARG(nointro, "", "", "",
-	"");
-FARG(nolights, "", "", "",
-	"");
-FARG(nobrightmaps, "", "", "",
-	"");
-FARG(nowidescreen, "", "", "",
-	"");
 FARG(bots, "", "", "",
 	"");
 FARG(debug, "", "", "",
-	"");
-FARG_CUSTOM(map, "+map", "", false, "", "",
-	"");
-FARG_CUSTOM(logfile, "+logfile", "", false, "", "",
 	"");
 
 EXTERN_FARG(join);
