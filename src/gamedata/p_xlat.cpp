@@ -104,7 +104,7 @@ void FLevelLocals::TranslateLineDef (line_t *ld, maplinedef_t *mld, int lineinde
 	ld->flags2 = newflags2;
 
 	// Only allow vanilla flags on certain maps
-	if (FLevelLocals::i_compatflags2 & COMPATF2_RESERVEDLINEFLAG && mld->flags & ML_RESERVED_ETERNITY)
+	if (FLevelLocals::i_compatflags2 & COMPATF2_RESERVEDLINEFLAG && FLevelLocals::maptype == MAPTYPE_DOOM && mld->flags & ML_RESERVED_ETERNITY)
 	{
 		ld->flags &= ML_BLOCKING|ML_BLOCKMONSTERS|ML_TWOSIDED|ML_DONTPEGTOP|ML_DONTPEGBOTTOM|ML_SECRET|ML_SOUNDBLOCK|ML_DONTDRAW|ML_MAPPED;
 		ld->flags2 = 0;
