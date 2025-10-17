@@ -62,9 +62,22 @@
 #include "version.h"
 #include "vm.h"
 
-#define LEFTMARGIN 8
-#define RIGHTMARGIN 8
-#define BOTTOMARGIN 12
+
+namespace Console::Defaults
+{
+	static inline constexpr uint8_t left_margin = 24;
+	static inline constexpr uint8_t right_margin = 24;
+	static inline constexpr uint8_t bottom_margin = 32;
+
+	static inline constexpr uint8_t max_hist_size = 250;
+
+	static inline constexpr uint8_t scroll_up = 1;
+	static inline constexpr uint8_t scroll_down = 2;
+	static inline constexpr uint8_t scroll_no = 0;
+	
+	static inline constexpr uint8_t min_con_lines = 20;
+	static inline constexpr uint8_t ms_between_cursor_ticks = 500;
+}
 
 extern bool AppActive;
 
@@ -116,10 +129,6 @@ struct GameAtExit
 
 static GameAtExit *ExitCmdList;
 
-#define SCROLLUP 1
-#define SCROLLDN 2
-#define SCROLLNO 0
-
 // Buffer for AddToConsole()
 static char *work = NULL;
 static int worklen = 0;
@@ -148,26 +157,28 @@ CUSTOM_CVAR(Int, developer, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 // Command to run when Ctrl-D is pressed at start of line
 CVAR(String, con_ctrl_d, "", CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 
-
-struct History
+namespace Console
 {
-	struct History *Older;
-	struct History *Newer;
-	FString String;
-};
+	struct History
+	{
+		struct History* Older;
+		struct History* Newer;
+		FString String;
+	};
 
-#define MAXHISTSIZE 50
-static struct History *HistHead = NULL, *HistTail = NULL, *HistPos = NULL;
-static int HistSize;
 
-static FNotifyBufferBase *NotifyStrings;
+	static struct History* HistHead = NULL, * HistTail = NULL, * HistPos = NULL;
+	static int HistSize;
+
+	static FNotifyBufferBase* NotifyStrings;
+}
+
+using namespace Console;
 
 void C_SetNotifyBuffer(FNotifyBufferBase* nbb)
 {
 	NotifyStrings = nbb;
 }
-
-
 
 int PrintColors[PRINTLEVELS+2] = { CR_UNTRANSLATED, CR_GOLD, CR_GRAY, CR_GREEN, CR_GREEN, CR_UNTRANSLATED };
 
@@ -245,7 +256,7 @@ void C_InitConsole (int width, int height, bool ingame)
 	{
 		cwidth = cheight = 8;
 	}
-	ConWidth = (width - LEFTMARGIN - RIGHTMARGIN);
+	ConWidth = (width - Defaults::left_margin - Defaults::right_margin);
 	CmdLine.ConCols = ConWidth / cwidth;
 
 	if (conbuffer == NULL) conbuffer = new FConsoleBuffer;
@@ -568,7 +579,7 @@ void C_DrawConsole ()
 
 	int textScale = active_con_scale(twod);
 
-	left = LEFTMARGIN;
+	left = Defaults::left_margin;
 	lines = (ConBottom/textScale-CurrentConsoleFont->GetHeight()*2)/CurrentConsoleFont->GetHeight();
 	if (-CurrentConsoleFont->GetHeight() + lines*CurrentConsoleFont->GetHeight() > ConBottom/textScale - CurrentConsoleFont->GetHeight()*7/2)
 	{
@@ -664,25 +675,25 @@ void C_DrawConsole ()
 			{
 				if (textScale == 1)
 				{
-					DrawText(twod, CurrentConsoleFont, CR_TAN, LEFTMARGIN, offset + lines * CurrentConsoleFont->GetHeight(), p->Text.GetChars(), TAG_DONE);
+					DrawText(twod, CurrentConsoleFont, CR_TAN, Defaults::left_margin, offset + lines * CurrentConsoleFont->GetHeight(), p->Text.GetChars(), TAG_DONE);
 				}
 				else
 				{
-					DrawText(twod, CurrentConsoleFont, CR_TAN, LEFTMARGIN, offset + lines * CurrentConsoleFont->GetHeight(), p->Text.GetChars(),
+					DrawText(twod, CurrentConsoleFont, CR_TAN, Defaults::left_margin, offset + lines * CurrentConsoleFont->GetHeight(), p->Text.GetChars(),
 						DTA_VirtualWidth, twod->GetWidth() / textScale,
 						DTA_VirtualHeight, twod->GetHeight() / textScale,
 						DTA_KeepRatio, true, TAG_DONE);
 				}
 			}
 
-			if (ConBottom >= 20)
+			if (ConBottom >= Defaults::min_con_lines)
 			{
 				if (gamestate != GS_STARTUP)
 				{
 					auto now = I_msTime();
 					if (now > CursorTicker)
 					{
-						CursorTicker = now + 500;
+						CursorTicker = now + Defaults::ms_between_cursor_ticks;
 						cursoron = !cursoron;
 					}
 					CmdLine.Draw(left, bottomline, textScale, cursoron);
@@ -994,7 +1005,7 @@ static bool C_HandleKey (event_t *ev, FCommandBuffer &buffer)
 					HistTail = temp;
 				}
 
-				if (HistSize == MAXHISTSIZE)
+				if (HistSize == Console::Defaults::max_hist_size)
 				{
 					HistTail = HistTail->Newer;
 					delete HistTail->Older;
