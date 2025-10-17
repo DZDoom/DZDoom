@@ -6961,7 +6961,7 @@ int DLevelScript::RunScript()
 	ACSLocalArrays noarrays;
 	ACSLocalArrays *localarrays = &noarrays;
 	ScriptFunction *activeFunction = NULL;
-	ScriptPtr *ptr;
+	ScriptPtr *ptr = nullptr;
 	FRemapTable *translation = 0;
 	int resultValue = 1;
 	int transi = -1;
@@ -7049,7 +7049,7 @@ int DLevelScript::RunScript()
 
 	while (state == SCRIPT_Running)
 	{
-		if ( (++runaway > 2000000) && ptr && !(ptr->Flags & SCRIPTF_Busy) )
+		if ( ptr && !(ptr->Flags & SCRIPTF_Busy) && (++runaway > 2000000) )
 		{
 			Printf ("Runaway %s terminated\n", ScriptPresentation(script).GetChars());
 			state = SCRIPT_PleaseRemove;
