@@ -75,8 +75,9 @@ namespace Console::Defaults
 	static inline constexpr uint8_t scroll_down = 2;
 	static inline constexpr uint8_t scroll_no = 0;
 	
-	static inline constexpr uint8_t min_con_lines = 20;
-	static inline constexpr uint8_t ms_between_cursor_ticks = 500;
+	static inline constexpr uint8_t min_con_lines_for_cursor = 20;
+	static inline constexpr uint8_t min_con_lines_for_text = 12;
+	static inline constexpr uint64_t ms_between_cursor_ticks = 500;
 }
 
 extern bool AppActive;
@@ -634,17 +635,17 @@ void C_DrawConsole ()
 			twod->AddColorOnlyQuad(0, visheight, screen->GetWidth(), 1, 0xff000000);
 		}
 
-		if (ConBottom >= 12)
+		if (ConBottom >= Defaults::min_con_lines_for_text)
 		{
 			if (textScale == 1)
-				DrawText(twod, CurrentConsoleFont, CR_ORANGE, twod->GetWidth() - 8 -
+				DrawText(twod, CurrentConsoleFont, CR_ORANGE, twod->GetWidth() - Defaults::left_margin -
 					CurrentConsoleFont->StringWidth (GetVersionString()),
-					round((float)ConBottom / textScale) - CurrentConsoleFont->GetHeight() - 4,
+					round((float)ConBottom / textScale) - CurrentConsoleFont->GetHeight() - Defaults::bottom_margin,
 					GetVersionString(), TAG_DONE);
 			else
-				DrawText(twod, CurrentConsoleFont, CR_ORANGE, (float)twod->GetWidth() / textScale - 8 -
+				DrawText(twod, CurrentConsoleFont, CR_ORANGE, (float)twod->GetWidth() / textScale - Defaults::left_margin -
 					CurrentConsoleFont->StringWidth(GetVersionString()),
-					round((float)ConBottom / textScale) - CurrentConsoleFont->GetHeight() - 4,
+					round((float)ConBottom / textScale) - CurrentConsoleFont->GetHeight() - Defaults::bottom_margin,
 					GetVersionString(),
 					DTA_VirtualWidth, twod->GetWidth() / textScale,
 					DTA_VirtualHeight, twod->GetHeight() / textScale,
@@ -686,7 +687,7 @@ void C_DrawConsole ()
 				}
 			}
 
-			if (ConBottom >= Defaults::min_con_lines)
+			if (ConBottom >= Defaults::min_con_lines_for_cursor)
 			{
 				if (gamestate != GS_STARTUP)
 				{
@@ -1141,7 +1142,7 @@ static bool C_HandleKey (event_t *ev, FCommandBuffer &buffer)
 	buffer.AppendToYankBuffer = keepappending;
 
 	// Ensure that the cursor is always visible while typing
-	CursorTicker = I_msTime() + 500;
+	CursorTicker = I_msTime() + Defaults::ms_between_cursor_ticks;
 	cursoron = 1;
 	return true;
 }
