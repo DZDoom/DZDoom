@@ -817,7 +817,15 @@ void HWSprite::Process(HWDrawInfo *di, AActor* thing, sector_t * sector, area_t 
 	const auto &vp = di->Viewpoint;
 	AActor *camera = vp.camera;
 
-	const double alpha = thing->InterpolatedAlpha(vp.TicFrac);
+	double alpha = thing->InterpolatedAlpha(vp.TicFrac);
+
+	//compat trick: some old WADs put alpha values in decorate from 0-255 (ex: Pirate Doom). This accidentally "worked" in certain versions of GZDoom.
+	//only the harware renderer is reported to have this issue, so it is patched here.
+	if (alpha > 1.0)
+	{
+		alpha /= 255.;
+	}
+
 	if (thing->renderflags & RF_INVISIBLE || !thing->RenderStyle.IsVisible(alpha))
 	{
 		if (!(thing->flags & MF_STEALTH) || !di->isStealthVision() || thing == camera)
