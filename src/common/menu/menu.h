@@ -240,6 +240,7 @@ public:
 	bool DontBlur;
 	bool Animated;
 	bool AnimatedTransition;
+	bool NoFade;
 	FString mCurrentTooltip;
 	double mTooltipScrollTimer;
 	double mTooltipScrollOffset;
