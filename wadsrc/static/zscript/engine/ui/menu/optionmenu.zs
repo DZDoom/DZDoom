@@ -168,6 +168,16 @@ class OptionMenu : Menu
 			mDesc.mItems[i].OnMenuCreated();
 		}
 
+		// Now that all items have been initialized, check if any have a tooltip to display.
+		foreach (item : mDesc.mItems)
+		{
+			if (item.GetTooltip().IsNotEmpty())
+			{
+				DrawTooltips = true;
+				break;
+			}
+		}
+
 		if (mDesc.mSelectedItem >= 0)
 			UpdateTooltip(mDesc.mItems[mDesc.mSelectedItem].GetTooltip());
 	}
@@ -911,6 +921,9 @@ class OptionMenu : Menu
 
 		ScreenArea box;
 		GetTooltipArea(box);
+		if (!DrawTooltips)
+			box.y = Screen.GetHeight();
+		
 		int ytop = y + mDesc.mScrollTop * 8 * CleanYfac_1;
 		LastRow = box.y - OptionHeight() * CleanYfac_1;
 		int rowheight = OptionMenuSettings.mLinespacing * CleanYfac_1 + 1;
