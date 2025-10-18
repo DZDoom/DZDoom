@@ -44,4 +44,6 @@ private:
 
 	TArray<std::pair<FString, FString>> languages;
 	bool hideLanguage = false;
+
+	int ExtraWadFlags = 0;
 };

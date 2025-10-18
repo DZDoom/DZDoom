@@ -1,8 +1,11 @@
 
 #include "settingspage.h"
 #include "launcherwindow.h"
+#include "findfile.h"
+#include "gameconfigfile.h"
 #include "gstrings.h"
 #include "i_interface.h"
+#include "i_system.h"
 #include "v_video.h"
 #include <zwidget/core/resourcedata.h>
 #include <zwidget/widgets/listview/listview.h>
@@ -99,6 +102,17 @@ SettingsPage::SettingsPage(LauncherWindow* launcher, const FStartupSelectionInfo
 	}
 
 	LangList->OnChanged = [=](int i) { OnLanguageChanged(i); };
+
+	ExtraWadFlags = 0;
+
+	if (BaseFileSearch("lights.pk3", nullptr, true, GameConfig))
+		ExtraWadFlags |= 1;
+
+	if (BaseFileSearch("brightmaps.pk3", nullptr, true, GameConfig))
+		ExtraWadFlags |= 2;
+
+	if (BaseFileSearch("game_widescreen_gfx.pk3", nullptr, true, GameConfig))
+		ExtraWadFlags |= 4;
 }
 
 void SettingsPage::SetValues(FStartupSelectionInfo& info) const
@@ -161,23 +175,19 @@ void SettingsPage::OnGeometryChanged()
 	double h = GetHeight();
 
 	GeneralLabel->SetFrameGeometry(0.0, y, 190.0, GeneralLabel->GetPreferredHeight());
-	ExtrasLabel->SetFrameGeometry(w - panelWidth, y, panelWidth, ExtrasLabel->GetPreferredHeight());
 	y += GeneralLabel->GetPreferredHeight();
 
 	FullscreenCheckbox->SetFrameGeometry(0.0, y, 190.0, FullscreenCheckbox->GetPreferredHeight());
-	LightsCheckbox->SetFrameGeometry(w - panelWidth, y, panelWidth, LightsCheckbox->GetPreferredHeight());
 	y += FullscreenCheckbox->GetPreferredHeight();
 
 	DisableAutoloadCheckbox->SetFrameGeometry(0.0, y, 190.0, DisableAutoloadCheckbox->GetPreferredHeight());
-	BrightmapsCheckbox->SetFrameGeometry(w - panelWidth, y, panelWidth, BrightmapsCheckbox->GetPreferredHeight());
 	y += DisableAutoloadCheckbox->GetPreferredHeight();
 
 	DontAskAgainCheckbox->SetFrameGeometry(0.0, y, 190.0, DontAskAgainCheckbox->GetPreferredHeight());
-	WidescreenCheckbox->SetFrameGeometry(w - panelWidth, y, panelWidth, WidescreenCheckbox->GetPreferredHeight());
 	y += DontAskAgainCheckbox->GetPreferredHeight();
 
 	SupportWadsCheckbox->SetFrameGeometry(0.0, y, 190.0, SupportWadsCheckbox->GetPreferredHeight());
-	y += SupportWadsCheckbox->GetPreferredHeight() + 10.0;
+	y += SupportWadsCheckbox->GetPreferredHeight();
 	const double optionsBottom = y;
 
 #ifdef RENDER_BACKENDS
@@ -195,8 +205,37 @@ void SettingsPage::OnGeometryChanged()
 	GLESCheckbox->SetFrameGeometry(x, y, 190.0, GLESCheckbox->GetPreferredHeight());
 	y += GLESCheckbox->GetPreferredHeight();
 #endif
+	const double backendsBottom = y;
 
-	y = max<double>(y, optionsBottom);
+	// Only show extra wads if they exist.
+	// These contain assets that are illegal for indie games
+	// to distribute, so sometimes they won't be present.
+	if (ExtraWadFlags != 0)
+	{
+		y = 0;
+		ExtrasLabel->SetFrameGeometry(w - panelWidth, y, panelWidth, ExtrasLabel->GetPreferredHeight());
+		y += ExtrasLabel->GetPreferredHeight();
+
+		if (ExtraWadFlags & 1)
+		{
+			LightsCheckbox->SetFrameGeometry(w - panelWidth, y, panelWidth, LightsCheckbox->GetPreferredHeight());
+			y += LightsCheckbox->GetPreferredHeight();
+		}
+
+		if (ExtraWadFlags & 2)
+		{
+			BrightmapsCheckbox->SetFrameGeometry(w - panelWidth, y, panelWidth, BrightmapsCheckbox->GetPreferredHeight());
+			y += BrightmapsCheckbox->GetPreferredHeight();
+		}
+
+		if (ExtraWadFlags & 4)
+		{
+			WidescreenCheckbox->SetFrameGeometry(w - panelWidth, y, panelWidth, WidescreenCheckbox->GetPreferredHeight());
+			y += WidescreenCheckbox->GetPreferredHeight();
+		}
+	}
+
+	y = max<double>(y, max<double>(optionsBottom, backendsBottom)) + 10.0;
 	if (!hideLanguage)
 	{
 		LangLabel->SetFrameGeometry(0.0, y, w, LangLabel->GetPreferredHeight());
