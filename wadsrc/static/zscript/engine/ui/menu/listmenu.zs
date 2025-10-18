@@ -126,6 +126,16 @@ class ListMenu : Menu
 			mDesc.mItems[i].OnMenuCreated();
 		}
 
+		// Now that all items have been initialized, check if any have a tooltip to display.
+		foreach (item : mDesc.mItems)
+		{
+			if (item.GetTooltip().IsNotEmpty())
+			{
+				DrawTooltips = true;
+				break;
+			}
+		}
+
 		if (mDesc.mSelectedItem >= 0)
 			UpdateTooltip(mDesc.mItems[mDesc.mSelectedItem].GetTooltip());
 	}
