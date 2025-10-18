@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <component type="desktop-application">
-  <id>org.uzdoom.UZDoom</id>
-  <launchable type="desktop-id">org.uzdoom.UZDoom.desktop</launchable>
+  <id>org.zdoom.UZDoom</id>
+  <launchable type="desktop-id">org.zdoom.UZDoom.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
 
   <name>UZDoom</name>
-  <developer id="org.uzdoom.UZDoom">
+  <developer id="org.zdoom.UZDoom">
     <name>UZDoom team</name>
     <url>https://github.com/UZDoom/UZDoom/graphs/contributors</url>
   </developer>
@@ -53,7 +53,7 @@
     <p>Commercial data files are required to run the supported games. For more info about all
       supported games and their data files, see Help -&gt; List of supported games.</p>
     <p>For the Flatpak distribution of UZDoom, all file access is restricted to
-      <code>~/.var/app/org.uzdoom.UZDoom/.config/uzdoom</code> by default for security reasons.
+      <code>~/.var/app/org.zdoom.UZDoom/.config/uzdoom</code> by default for security reasons.
       You will need to place your IWADs and PWADS there, or use an application like Flatseal
       to give UZDoom additional permissions.</p>
   </description>

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=UZDoom
 Comment=Multi-game launcher for Doom era games
-Icon=org.uzdoom.UZDoom
+Icon=org.zdoom.UZDoom
 Categories=Game;Shooter;
 Exec=uzdoom %F
 StartupNotify=true
@@ -14,30 +14,30 @@ Actions=launch-safemode;launch-doom-1;launch-doom-2;launch-heretic;launch-hexen;
 
 [Desktop Action launch-safemode]
 Name=UZDoom Safemode
-Icon=org.uzdoom.UZDoom
+Icon=org.zdoom.UZDoom
 Exec=uzdoom -noautoload -noautoexec %F
 
 [Desktop Action launch-doom-1]
 Name=Launch Doom
-Icon=org.uzdoom.UZDoom
+Icon=org.zdoom.UZDoom
 Exec=uzdoom -iwad DOOM.WAD %F
 
 [Desktop Action launch-doom-2]
 Name=Launch Doom 2
-Icon=org.uzdoom.UZDoom
+Icon=org.zdoom.UZDoom
 Exec=uzdoom -iwad DOOM2.WAD %F
 
 [Desktop Action launch-heretic]
 Name=Launch Heretic
-Icon=org.uzdoom.UZDoom
+Icon=org.zdoom.UZDoom
 Exec=uzdoom -iwad HERETIC.WAD %F
 
 [Desktop Action launch-hexen]
 Name=Launch Hexen
-Icon=org.uzdoom.UZDoom
+Icon=org.zdoom.UZDoom
 Exec=uzdoom -iwad HEXEN.WAD %F
 
 [Desktop Action launch-strife]
 Name=Launch Strife
-Icon=org.uzdoom.UZDoom
+Icon=org.zdoom.UZDoom
 Exec=uzdoom -iwad STRIFE1.WAD %F
