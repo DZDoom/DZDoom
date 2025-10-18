@@ -799,6 +799,10 @@ class Inventory : Actor
 			copy.DropTime = 30;
 			copy.bSpecial = copy.bSolid = false;
 			Amount -= amt;
+			if (Amount <= 0)
+			{
+				DepleteOrDestroy();
+			}
 		}
 		return copy;
 	}
