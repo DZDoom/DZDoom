@@ -43,6 +43,7 @@ struct dsda_options
 	int comp_stairs = -1;
 	int comp_ledgeblock = -1;
 	int comp_friendlyspawn = -1;
+	int comp_reservedlineflag = -1;
 };
 
 struct dsda_option_t
@@ -74,6 +75,7 @@ static dsda_option_t option_list[] = {
   { "comp_stairs", &dsda_options::comp_stairs, 0, 1 },
   { "comp_ledgeblock", &dsda_options::comp_ledgeblock, 0, 1 },
   { "comp_friendlyspawn", &dsda_options::comp_friendlyspawn, 0, 1 },
+  { "comp_reservedlineflag", &dsda_options::comp_friendlyspawn, 0, 1 },
   { 0 }
 };
 
@@ -190,6 +192,8 @@ void parseOptions()
 		setflag(lev.compatmask, COMPATF_STAIRINDEX, opt.comp_stairs);
 		setflag(lev.compatflags, COMPATF_CROSSDROPOFF, opt.comp_ledgeblock);
 		setflag(lev.compatmask, COMPATF_CROSSDROPOFF, opt.comp_ledgeblock);
+		setflag(lev.compatflags2, COMPATF2_RESERVEDLINEFLAG, opt.comp_reservedlineflag);
+		setflag(lev.compatmask2, COMPATF2_RESERVEDLINEFLAG, opt.comp_reservedlineflag);
 
 		/* later. these should be supported but are not implemented yet.
 		if (opt.monsters_remember == 0)
@@ -202,4 +206,3 @@ void parseOptions()
 
 	}
 }
-
